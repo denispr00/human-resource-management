@@ -5,48 +5,136 @@
   <groupId>com.pro.denis.hrm</groupId>
   <artifactId>human-resource-management</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0-SNAPSHOT</version>
   
   <name>human-resource-management</name>
   <url>http://maven.apache.org</url>
   
   
   <properties>
-    <spring.version>4.3.14.RELEASE</spring.version>
+    <spring.version>5.0.0.RELEASE</spring.version>
+    <hibernate.version>5.2.11.Final</hibernate.version>
+    <hibernate.validator>5.4.1.Final</hibernate.validator>
+    <c3p0.version>0.9.5.2</c3p0.version>
+    <hsqldb.version>1.8.0.10</hsqldb.version>
   </properties>
   
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-    
-	<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-core</artifactId>
-		<version>${spring.version}</version>
-	</dependency>
-
-	<!-- The spring-webmvc module (also known as the Web-Servlet module) contains 
-		Spring’s model-view-controller (MVC) and REST Web Services implementation 
-		for web applications -->
-	<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-webmvc</artifactId>
-		<version>${spring.version}</version>
-	</dependency>
-
-	<!-- The spring-web module provides basic web-oriented integration features 
-		such as multipart file upload functionality and the initialization of the 
-		IoC container using Servlet listeners and a web-oriented application context -->
-	<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-web</artifactId>
-		<version>${spring.version}</version>
-	</dependency>
-  </dependencies>
+  <dependencyManagement>
+	  <dependencies>
+	    <dependency>
+	      <groupId>junit</groupId>
+	      <artifactId>junit</artifactId>
+	      <version>4.12</version>
+	      <scope>test</scope>
+	    </dependency>
+	    
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+	
+		<!-- The spring-webmvc module (also known as the Web-Servlet module) contains 
+			Spring’s model-view-controller (MVC) and REST Web Services implementation 
+			for web applications -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+	
+		<!-- The spring-web module provides basic web-oriented integration features 
+			such as multipart file upload functionality and the initialization of the 
+			IoC container using Servlet listeners and a web-oriented application context -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		
+		<dependency>
+	        <groupId>org.springframework</groupId>
+	        <artifactId>spring-test</artifactId>
+	        <version>4.3.14.RELEASE</version>
+	    </dependency>
+	    
+	    <dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+	  	</dependency>
+	        
+		<!-- <dependency>
+		    <groupId>org.springframework.data</groupId>
+		    <artifactId>spring-data-elasticsearch</artifactId>
+		    <version>2.0.1.RELEASE</version>
+   			<version>3.0.5.RELEASE</version>
+		    <artifactId>spring-data-elasticsearch</artifactId>
+		    <version>2.0.1.RELEASE</version>
+		</dependency>
+		
+		Elasticsearch
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>transport</artifactId>
+            <version>6.2.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency> -->
+		
+		<!-- Spring ORM -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+ 
+        <!-- Hibernate Core -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        
+        <dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-entitymanager</artifactId>
+		    <version>${hibernate.version}</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.apache.tomcat</groupId>
+		    <artifactId>tomcat-dbcp</artifactId>
+		    <version>9.0.1</version>
+		</dependency>
+ 
+        <!-- Hibernate Validator -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate.validator}</version>
+        </dependency>
+        
+         <!-- HSQL Dependency -->
+        <dependency>
+            <groupId>hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>${hsqldb.version}</version>
+        </dependency>
+        
+        <dependency>
+		    <groupId>mysql</groupId>
+		    <artifactId>mysql-connector-java</artifactId>
+		    <version>6.0.6</version>
+		</dependency>
+		
+	  </dependencies>
+  </dependencyManagement>
+	  
   <modules>
     <module>hrm-service</module>
     <module>hrm-domain</module>

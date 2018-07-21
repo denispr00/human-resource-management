@@ -1,5 +1,6 @@
-<h1> Human Resource Management <h1>
-<hr>
+# Human Resource Management 
 
-<p> A Spring MVC Web application for human resource management <p>
+A Spring MVC Web application for human resource management
+
+
 
