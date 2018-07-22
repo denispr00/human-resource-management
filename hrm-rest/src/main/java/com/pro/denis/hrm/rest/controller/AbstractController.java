@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pro.denis.hrm.domain.AbstractDomain;
 import com.pro.denis.hrm.service.business.AbstractService;
@@ -29,7 +28,7 @@ public abstract class AbstractController<T extends AbstractDomain> {
 	}
 
 	@RequestMapping(path = "/retrieveList", method = RequestMethod.POST)
-	protected @ResponseBody List<T> retrieveList() {
+	protected List<T> retrieveList(@RequestBody(required = false) T entity) {
 		return getService().retrieveList();
 	}
 
