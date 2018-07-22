@@ -1,9 +1,28 @@
 package com.pro.denis.hrm.service.repository;
 
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+
+@Transactional
 public abstract class AbstractRepository<T> {
 
-	/*public abstract SessionFactory getSessionFactory();
+	@Autowired
+	private SessionFactory sessionFactory;
+
+	// public abstract SessionFactory getSessionFactory();
 	
+	public abstract Class<T> getClassT();
+
+	public Session getSession() {
+		// return getSessionFactory().getCurrentSession();
+		return sessionFactory.getCurrentSession();
+	}
+
 	public Object add(T entity) {
 		return this.getSession().save(entity);
 	}
@@ -22,9 +41,9 @@ public abstract class AbstractRepository<T> {
 		return (T) this.getSession().get(persistClass, identifier);
 	}
 	
-	public Session getSession() {
-		return getSessionFactory().getCurrentSession();
+	public List<T> findAll() {
+		return this.getSession().createQuery("from " + getClassT().getName()).list();
 	}
-	
-	*/
+
+
 }

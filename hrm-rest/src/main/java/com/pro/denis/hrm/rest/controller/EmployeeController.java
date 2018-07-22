@@ -1,29 +1,46 @@
 package com.pro.denis.hrm.rest.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pro.denis.hrm.domain.Employee;
+import com.pro.denis.hrm.service.business.AbstractService;
 import com.pro.denis.hrm.service.business.EmployeeService;
 
 @RestController
 @RequestMapping("/employee")
-public class EmployeeController extends AbstractController {
+public class EmployeeController extends AbstractController<Employee> {
 
 	@Autowired
 	EmployeeService employeeService;
 
-	@RequestMapping(path = "/create", method = RequestMethod.GET)
-	public Employee create() {
+	@Override
+	public AbstractService<Employee> getService() {
+		return employeeService;
+	}
+
+	@Override
+	public Class<Employee> getClassT() {
+		return Employee.class;
+	}
+
+	@RequestMapping(path = "/createA", method = RequestMethod.GET)
+	protected Employee createA() {
 		Employee employee = new Employee();
 		// employee.setId("001");
 		employee.setName("denis");
 		employee.setAddress("address");
-		employeeService.save(employee);
-		return null;
+		return employeeService.add(employee);
 		// return employee;
+	}
+	@RequestMapping(path = "/list", method=RequestMethod.GET)
+	public List<Employee> retrieveList(){
+		return employeeService.retrieveList();
+		
 	}
 
 	/*@RequestMapping(path ="/readAll", method=RequestMethod.GET)
