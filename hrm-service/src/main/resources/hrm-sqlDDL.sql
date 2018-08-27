@@ -16,3 +16,10 @@ id MEDIUMINT  NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (id)
 );
 
+create table user (
+id int not null auto_increment primary key,
+username varchar(50) not null,
+password varchar(50)
+);
+
+

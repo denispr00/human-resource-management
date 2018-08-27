@@ -4,3 +4,12 @@
 .springBeans
 .settings/
 target/
+bin/
+lib/
+web/
+
+# IntelliJ project files 
+*.iml
+*.iws
+*.ipr
+.idea/
