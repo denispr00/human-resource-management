@@ -2,7 +2,7 @@ package com.pro.denis.hrm.service.repository;
 
 import org.springframework.stereotype.Repository;
 
-import com.pro.denis.hrm.domain.User;
+import com.pro.denis.hrm.domain.security.User;
 
 @Repository
 public class UserRepository extends AbstractRepository {

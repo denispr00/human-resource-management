@@ -9,7 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.pro.denis.hrm.TestConfig;
-import com.pro.denis.hrm.domain.User;
+import com.pro.denis.hrm.domain.security.User;
 import com.pro.denis.hrm.service.business.UserService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
