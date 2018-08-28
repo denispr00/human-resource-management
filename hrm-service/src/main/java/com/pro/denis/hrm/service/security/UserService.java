@@ -1,9 +1,10 @@
-package com.pro.denis.hrm.service.business;
+package com.pro.denis.hrm.service.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pro.denis.hrm.domain.security.User;
+import com.pro.denis.hrm.service.business.AbstractService;
 import com.pro.denis.hrm.service.repository.AbstractRepository;
 import com.pro.denis.hrm.service.repository.UserRepository;
 
