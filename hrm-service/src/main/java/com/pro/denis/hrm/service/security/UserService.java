@@ -1,5 +1,6 @@
 package com.pro.denis.hrm.service.security;
 
+import org.hibernate.Criteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,10 @@ public class UserService extends AbstractService<User> {
 	public AbstractRepository<User> getRepository() {
 		// TODO Auto-generated method stub
 		return userRepository;
+	}
+
+	public User findByUsername(String username){
+		return userRepository.findByUsername(username);
 	}
 
 }

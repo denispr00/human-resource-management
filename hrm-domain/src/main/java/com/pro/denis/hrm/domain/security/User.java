@@ -1,23 +1,35 @@
 package com.pro.denis.hrm.domain.security;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 import com.pro.denis.hrm.domain.AbstractDomain;
 
+import java.util.List;
+
 @Entity
+@Table(name = "user")
 public class User extends AbstractDomain {
 
 	private String username;
 
 	private String password;
 
+	@Column(name = "first_name")
 	private String firstName;
 
+	@Column(name = "last_name")
 	private String lastName;
 
 	private String email;
 
 	private Boolean enabled;
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user",fetch = FetchType.EAGER)
+	/*@JoinTable(
+			name = "authority",
+			joinColumns = {@JoinColumn(name = "user_id",referencedColumnName= "id")}
+	)*/
+	private List<Authority> authorities;
 
 
 	public String getUsername() {
@@ -68,4 +80,11 @@ public class User extends AbstractDomain {
 		this.lastName = lastName;
 	}
 
+	public List<Authority> getAuthorities() {
+		return authorities;
+	}
+
+	public void setAuthorities(List<Authority> authorities) {
+		this.authorities = authorities;
+	}
 }

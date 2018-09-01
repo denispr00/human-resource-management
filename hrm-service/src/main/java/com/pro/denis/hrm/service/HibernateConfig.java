@@ -49,7 +49,7 @@ public class HibernateConfig {
 	@Bean
 	public DataSource dataSource() {
 		BasicDataSource dataSource = new BasicDataSource();
-		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
 		dataSource.setUrl("jdbc:mysql://localhost:3306/hrm?zeroDateTimeBehavior=convertToNull");
 		dataSource.setUsername("root");
 		dataSource.setPassword("itdev");
@@ -66,9 +66,9 @@ public class HibernateConfig {
 
 	private final Properties hibernateProperties() {
 		Properties hibernateProperties = new Properties();
-		hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
-		hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-
+		//hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+		hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL57Dialect");
+		hibernateProperties.setProperty("hibernate.show_sql", "true");
 		return hibernateProperties;
 	}
 }

@@ -2,6 +2,7 @@ package com.pro.denis.hrm.service.repository;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,10 @@ public abstract class AbstractRepository<T> {
 	
 	public List<T> findAll() {
 		return this.getSession().createQuery("from " + getClassT().getName()).list();
+	}
+
+	protected Criteria createEntityCriteria(){
+		return this.getSession().createCriteria(getClassT());
 	}
 
 
