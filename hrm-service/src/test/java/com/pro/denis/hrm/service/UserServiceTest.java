@@ -1,8 +1,16 @@
 package com.pro.denis.hrm.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.*;
+import java.time.temporal.*;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-import org.junit.Assert;
+import com.pro.denis.hrm.service.edg.*;
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +22,7 @@ import com.pro.denis.hrm.domain.security.User;
 import com.pro.denis.hrm.service.security.UserService;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestConfig.class})
@@ -43,8 +52,7 @@ public class UserServiceTest {
 	public void testAuthority(){
 		User user = userService.findByUsername("admin");
 		user.getAuthorities().forEach( authority -> System.out.println("aut="+authority.getAuthority()));
-
-
 	}
+
 
 }
