@@ -1,15 +1,9 @@
 package com.pro.denis.hrm.rest.controller;
 
-import com.pro.denis.hrm.rest.security.JwtTokenUtil;
-import com.pro.denis.hrm.rest.security.JwtAuthenticationRequest;
-import com.pro.denis.hrm.rest.security.JwtAuthenticationResponse;
-import com.pro.denis.hrm.rest.security.JwtTokenUtil;
-import com.pro.denis.hrm.rest.security.JwtUser;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +17,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.pro.denis.hrm.rest.security.JwtAuthenticationRequest;
+import com.pro.denis.hrm.rest.security.JwtAuthenticationResponse;
+import com.pro.denis.hrm.rest.security.JwtTokenUtil;
+import com.pro.denis.hrm.rest.security.JwtUser;
 
 
 @RestController
@@ -50,7 +49,7 @@ public class AuthenticationRestController {
         System.out.println("login called");
         // Perform the security
         final Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
+				.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
                         authenticationRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 

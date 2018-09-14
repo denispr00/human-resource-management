@@ -39,6 +39,7 @@ public class EmployeeController extends AbstractController<Employee> {
 	}
 	@RequestMapping(path = "/list", method=RequestMethod.GET)
 	public List<Employee> retrieveList(){
+		System.out.println("retrieveList");
 		return employeeService.retrieveList();
 		
 	}

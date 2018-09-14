@@ -1,11 +1,12 @@
 package com.pro.denis.hrm.rest.config;
 
-import com.pro.denis.hrm.rest.security.JwtAuthenticationEntryPoint;
-import com.pro.denis.hrm.rest.security.JwtAuthenticationTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -14,75 +15,74 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.pro.denis.hrm.rest.security.JwtAuthenticationEntryPoint;
+import com.pro.denis.hrm.rest.security.JwtAuthenticationTokenFilter;
+import com.pro.denis.hrm.rest.security.JwtUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @ComponentScan(basePackages = {"com.pro.denis.hrm.rest.security","com.pro.denis.hrm.rest.controller",
         "com.pro.denis.hrm.service"})
+@PropertySource(value = {"classpath:application.properties"})
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private JwtAuthenticationEntryPoint unauthorizedHandler;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+	@Autowired
+	private JwtUserDetailsService jwtUserDetailsService;
 
-    // Custom JWT based security filter
-    @Autowired
-    JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+	// Custom JWT based security filter
+	@Autowired
+	JwtAuthenticationTokenFilter authenticationTokenFilter;
+	
+	@Value("${jwt.header}")
+	private String tokenHeader;
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    };
+	@Value("${jwt.route.authentication.path}")
+	private String authenticationPath;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-    }
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
+	}
+	
+	@Bean
+	public BCryptPasswordEncoder passwordEncoder() {
+	    return new BCryptPasswordEncoder();
+	};
+	
+	@Override
+	protected void configure(HttpSecurity httpSecurity) throws Exception {
+		httpSecurity
+				// we don't need CSRF because our token is invulnerable
+				.csrf().disable() // comment out bcoz If users will not be
+				// using your application in a web browser, then it is safe to
+				// disable CSRF
+	
+				.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+	
+				// don't create session
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+	
+				/*.authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll().anyRequest()
+				.authenticated();*/
+				.authorizeRequests().antMatchers("/auth/**").permitAll()
+				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated();
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        /*http.authorizeRequests().anyRequest().hasAnyRole("ADMIN", "USER")
-                .and()
-                .authorizeRequests().antMatchers("/login**").permitAll()
-                .and()
-                .formLogin().loginPage("/auth/login").loginProcessingUrl("/loginAction").permitAll()
-                .and()
-                .logout().logoutSuccessUrl("/login").permitAll()
-                .and()
-                .csrf().disable();*/
-        http
-                // we don't need CSRF because our token is invulnerable
-                .csrf().disable()
+		// Custom JWT based security filter
+		httpSecurity.addFilterBefore(authenticationTokenFilter,
+				UsernamePasswordAuthenticationFilter.class);
 
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+		// disable page caching
+		httpSecurity.headers().cacheControl();
+	}
 
-                // don't create session
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                
-                .authorizeRequests()
-                .antMatchers("/auth/**").permitAll()
-                .anyRequest().authenticated();
 
-        http
-                .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
-
-        // disable page caching
-        http
-                .headers()
-                .frameOptions().sameOrigin()  // required to set for H2 else H2 Console will be blank.
-                .cacheControl();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return super.userDetailsService();
-    }
 
     @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
     @Override

@@ -45,10 +45,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
         String username = jwtTokenUtil.getUsernameFromToken(authToken);
 
-		logger.info("checking authentication for user " + username);
-        logger.info("authToken" + authToken);
-        System.out.println("BBBchecking authentication for user " + username);
-
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             // It is not compelling necessary to load the use details from the database. You could also store the information
@@ -60,8 +56,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             if (jwtTokenUtil.validateToken(authToken, userDetails)) {
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                logger.info("authenticated user " + username + ", setting security context");
-                System.out.println("authenticated user " + username + ", setting security context");
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }

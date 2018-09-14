@@ -1,16 +1,9 @@
 package com.pro.denis.hrm.service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.*;
-import java.time.temporal.*;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import static org.junit.Assert.assertEquals;
 
-import com.pro.denis.hrm.service.edg.*;
-import org.apache.commons.lang3.time.DateUtils;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +13,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.pro.denis.hrm.TestConfig;
 import com.pro.denis.hrm.domain.security.User;
 import com.pro.denis.hrm.service.security.UserService;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestConfig.class})
@@ -35,7 +25,10 @@ public class UserServiceTest {
 	public void testUser() {
 		List<User> userList = userService.retrieveList();
 		System.out.println("size"+userList.size());
-		userList.forEach(user -> System.out.println("username" + user.getUsername()));
+		userList.forEach(user -> {
+			System.out.println("username" + user.getUsername());
+			user.getAuthorities().forEach(a -> System.out.println("autho" + a.getAuthority()));
+		});
 	}
 
 	@Test
