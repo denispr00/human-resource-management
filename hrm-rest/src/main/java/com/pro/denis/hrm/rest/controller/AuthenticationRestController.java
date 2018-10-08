@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,10 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pro.denis.hrm.domain.security.User;
 import com.pro.denis.hrm.rest.security.JwtAuthenticationRequest;
 import com.pro.denis.hrm.rest.security.JwtAuthenticationResponse;
 import com.pro.denis.hrm.rest.security.JwtTokenUtil;
 import com.pro.denis.hrm.rest.security.JwtUser;
+import com.pro.denis.hrm.service.HrmException;
+import com.pro.denis.hrm.service.security.UserService;
 
 
 @RestController
@@ -40,6 +44,9 @@ public class AuthenticationRestController {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+	@Autowired
+	private UserService userService;
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(
@@ -62,6 +69,18 @@ public class AuthenticationRestController {
         return ResponseEntity.ok(new JwtAuthenticationResponse(token));
     }
 
+	@RequestMapping(path = "/register", method = RequestMethod.POST)
+	public ResponseEntity<User> register(@RequestBody User user) throws Exception {
+		User existingUser = userService.findByUsername(user.getUsername());
+		
+		if (existingUser != null) {
+			throw new HrmException(HttpStatus.CONTINUE, "user already exists", "json user already");
+		}
+
+		return ResponseEntity.status(HttpStatus.OK).body(userService.add(user));
+
+	}
+
     @RequestMapping(path = "/refresh", method = RequestMethod.GET)
     public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
         String token = request.getHeader(tokenHeader);
@@ -76,5 +95,6 @@ public class AuthenticationRestController {
 			return ResponseEntity.badRequest().body(null);
 		}*/
     }
+
 
 }
